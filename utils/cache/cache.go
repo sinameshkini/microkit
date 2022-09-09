@@ -41,3 +41,7 @@ func Set(ctx context.Context, key string, val interface{}) (err error) {
 
 	return
 }
+
+func Active() bool {
+	return c.Active
+}
