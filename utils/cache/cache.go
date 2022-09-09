@@ -43,5 +43,5 @@ func Set(ctx context.Context, key string, val interface{}) (err error) {
 }
 
 func Active() bool {
-	return c.Active
+	return c != nil && c.Active
 }
