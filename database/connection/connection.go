@@ -73,6 +73,8 @@ func Connect(c *DBConnection) (err error) {
 		return ErrInvalidDriver
 	}
 
+	logrus.Infoln("database connected successfully!")
+
 	return
 }
 

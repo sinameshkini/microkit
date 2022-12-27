@@ -49,7 +49,11 @@ func (PaginateTemplate) Create(total, offset, limit int) *PaginateTemplate {
 		pt = &PaginateTemplate{}
 	)
 
-	if offset <= 0 {
+	if limit <= 0 {
+		limit = 5
+	}
+
+	if offset < 0 {
 		offset = 0
 	}
 
