@@ -94,6 +94,27 @@ func ParsePID(id interface{}) (pid PID, err error) {
 	return pid, err
 }
 
+func ParsePIDf(id interface{}) (pid PID) {
+	var err error
+	switch v := id.(type) {
+	case string:
+		var d int
+		if d, err = strconv.Atoi(v); err != nil {
+			return
+		}
+
+		pid = PID(d)
+	case int:
+		pid = PID(id.(int))
+	case float64:
+		pid = PID(id.(float64))
+	case PID:
+		pid = id.(PID)
+	}
+
+	return
+}
+
 // Parse ...
 func Parse(id string) PID {
 	pid, _ := ParsePID(id)
