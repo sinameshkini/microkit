@@ -10,10 +10,11 @@ import (
 )
 
 var (
+	ErrConnectionLost    = errors.New("database connection lost")
 	ErrInvalidConnection = errors.New("invalid database connection")
 	ErrInvalidDriver     = errors.New("invalid driver selected")
 
-	Conn *DBConnection
+	conn *DBConnection
 )
 
 func Init(c *DBConnection) (err error) {
@@ -21,9 +22,17 @@ func Init(c *DBConnection) (err error) {
 		return
 	}
 
-	Conn = c
+	conn = c
 
 	return nil
+}
+
+func GetInstance() (dbConnrction *DBConnection, err error) {
+	if conn != nil {
+		return conn, nil
+	}
+
+	return nil, ErrConnectionLost
 }
 
 type DBConnection struct {
