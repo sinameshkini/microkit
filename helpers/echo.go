@@ -60,3 +60,19 @@ func Reply(ctx echo.Context, httpStatus int, err error, content map[string]inter
 
 	return ctx.JSON(httpStatus, template)
 }
+
+func ErrorToHttpStatusCode(err error) (status int) {
+	switch err {
+	case ErrNotFound, ErrRecordNotFound:
+		status = http.StatusNotFound
+	case ErrInvalidRequest:
+		status = http.StatusBadRequest
+	case ErrAlreadyExist:
+		status = http.StatusNotAcceptable
+
+	default:
+		status = http.StatusNotImplemented
+	}
+
+	return
+}
