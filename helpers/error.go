@@ -2,7 +2,6 @@ package helpers
 
 import (
 	"errors"
-	"net/http"
 )
 
 var (
@@ -12,13 +11,3 @@ var (
 	ErrInvalidRequest  = errors.New("invalid request data")
 	ErrEmailIsVerified = errors.New("email is verified")
 )
-
-func ErrorToHttpStatusCode(err error) int {
-	switch err {
-	case ErrNotFound, ErrRecordNotFound:
-		return http.StatusNotFound
-
-	default:
-		return http.StatusInternalServerError
-	}
-}
