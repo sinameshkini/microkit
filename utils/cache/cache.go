@@ -16,6 +16,10 @@ type CacheConn struct {
 	ExpireTime  time.Duration
 }
 
+func GetConnection() *CacheConn {
+	return c
+}
+
 func Connect(cacheConn *redis.Options, expDur time.Duration) (err error) {
 	c = &CacheConn{
 		Active:      viper.GetBool("cache.active"),
