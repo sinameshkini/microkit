@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/go-redis/redis/v8 v8.11.5
+	github.com/go-resty/resty/v2 v2.7.0
 	github.com/labstack/echo/v4 v4.9.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/viper v1.13.0
