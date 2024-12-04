@@ -26,7 +26,7 @@ func (r *Repository[T]) AddAll(entity *[]T, ctx context.Context) error {
 
 func (r *Repository[T]) GetById(id int, ctx context.Context) (*T, error) {
 	var entity T
-	err := r.db.WithContext(ctx).Model(&entity).Where("id = ? AND is_active = ?", id, true).FirstOrInit(&entity).Error
+	err := r.db.WithContext(ctx).Model(&entity).Where("id = ?", id).FirstOrInit(&entity).Error
 	if err != nil {
 		return nil, err
 	}

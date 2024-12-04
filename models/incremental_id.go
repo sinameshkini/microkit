@@ -44,9 +44,9 @@ func (id *IID) String() string {
 	return strconv.Itoa(int(*id))
 }
 
-// CheckPID ...
-func (id *IID) CheckPID() bool {
-	return true
+// CheckIID ...
+func (id *IID) CheckIID() bool {
+	return id != nil && id.IsValid()
 }
 
 func (id *IID) IsValid() bool {
@@ -111,13 +111,13 @@ func Validate(id string) (IID, bool) {
 }
 
 // String ...
-func String(id *IID) string {
+func String(id IID) string {
 	return id.String()
 }
 
-// CheckPID ...
-func CheckPID(id *IID) bool {
-	return id.CheckPID()
+// CheckIID ...
+func CheckIID(id IID) bool {
+	return id.CheckIID()
 }
 
 // Value implements the driver.Valuer interface.

@@ -48,7 +48,7 @@ func (r *cli) Set(ctx context.Context, key string, value interface{}, expiration
 
 func (r *cli) Get(ctx context.Context, key string, value interface{}) (err error) {
 	var p []byte
-	if err = r.client.Get(ctx, key).Scan(p); err != nil {
+	if err = r.client.Get(ctx, key).Scan(&p); err != nil {
 		return err
 	}
 	return json.Unmarshal(p, &value)
