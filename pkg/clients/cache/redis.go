@@ -25,7 +25,7 @@ type Cache interface {
 	RedisClient() *redis.Client
 }
 
-func New(conf Config) Cache {
+func New(conf *Config) Cache {
 	client := redis.NewClient(&redis.Options{
 		Addr:     conf.Host,
 		DB:       conf.DB,
