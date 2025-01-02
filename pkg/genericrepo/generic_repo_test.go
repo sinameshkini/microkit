@@ -68,7 +68,7 @@ func TestRepository_Add(t *testing.T) {
 	tx.Rollback()
 }
 
-func TestRepository_GetById(t *testing.T) {
+func TestRepository_GetByID(t *testing.T) {
 	// Arrange
 	db, err := database.NewDBWithConf(conf)
 	if err != nil {
@@ -89,7 +89,7 @@ func TestRepository_GetById(t *testing.T) {
 	}
 
 	// Act
-	entity, err := repo.GetById(1, context.Background())
+	entity, err := repo.GetByID(context.Background(), 1, nil)
 
 	// Assert
 	assert.NoError(t, err)

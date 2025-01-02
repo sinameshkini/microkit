@@ -24,9 +24,17 @@ func (r *Repository[T]) AddAll(entity *[]T, ctx context.Context) error {
 	return r.db.WithContext(ctx).Create(&entity).Error
 }
 
-func (r *Repository[T]) GetById(id int, ctx context.Context) (*T, error) {
-	var entity T
-	err := r.db.WithContext(ctx).Model(&entity).Where("id = ?", id).FirstOrInit(&entity).Error
+func (r *Repository[T]) GetByID(ctx context.Context, id any, preloads []string) (*T, error) {
+	var (
+		entity T
+		query  = r.db.WithContext(ctx).Model(&entity)
+	)
+
+	for _, preload := range preloads {
+		query = query.Preload(preload)
+	}
+
+	err := query.Where("id = ?", id).First(&entity).Error
 	if err != nil {
 		return nil, err
 	}
