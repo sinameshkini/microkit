@@ -6,6 +6,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestNewSQLite(t *testing.T) {
+	db, err := NewSQLite("test.db", true)
+	assert.NoError(t, err, "NewSQLite should not return an error for a valid config")
+	assert.NotNil(t, db, "NewSQLite should return a non-nil *gorm.DB instance")
+}
+
 func TestConfig_dsn(t *testing.T) {
 	conf := &Config{
 		Host:     "localhost",

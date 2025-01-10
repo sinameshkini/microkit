@@ -4,12 +4,17 @@ import (
 	"database/sql"
 	"fmt"
 	"gorm.io/driver/postgres"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"
 	"os"
 	"time"
 )
+
+func NewSQLite(path string, debug bool) (*gorm.DB, error) {
+	return gorm.Open(sqlite.Open(path), &gorm.Config{Logger: getLogger(debug)})
+}
 
 func NewDBWithConf(conf *Config) (*gorm.DB, error) {
 	return gorm.Open(postgres.Open(conf.dsn()), &gorm.Config{Logger: getLogger(conf.Debug)})
