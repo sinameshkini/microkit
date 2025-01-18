@@ -12,22 +12,53 @@ import (
 	"time"
 )
 
-func NewSQLite(path string, debug bool) (*gorm.DB, error) {
-	return gorm.Open(sqlite.Open(path), &gorm.Config{Logger: getLogger(debug)})
+type impl struct {
+	db *gorm.DB
 }
 
-func NewDBWithConf(conf *Config) (*gorm.DB, error) {
-	return gorm.Open(postgres.Open(conf.dsn()), &gorm.Config{Logger: getLogger(conf.Debug)})
+func (i *impl) DB() *gorm.DB {
+	return i.db
 }
 
-func NewDBWithDsn(dsn string, debug bool) (*gorm.DB, error) {
+func (i *impl) Close() error {
+	db, err := i.db.DB()
+	if err != nil {
+		return err
+	}
+
+	return db.Close()
+}
+
+func NewSQLite(path string, debug bool) (Database, error) {
+	db, err := gorm.Open(sqlite.Open(path), &gorm.Config{Logger: getLogger(debug)})
+	if err != nil {
+		return nil, err
+	}
+
+	return &impl{db: db}, nil
+}
+
+func NewDBWithConf(conf *Config) (Database, error) {
+	db, err := gorm.Open(postgres.Open(conf.dsn()), &gorm.Config{Logger: getLogger(conf.Debug)})
+	if err != nil {
+		return nil, err
+	}
+
+	return &impl{db: db}, nil
+}
+
+func NewDBWithDsn(dsn string, debug bool) (Database, error) {
 	sqlDB, err := sql.Open("pgx", dsn)
 	if err != nil {
 		return nil, err
 	}
 
-	return gorm.Open(postgres.New(postgres.Config{Conn: sqlDB}), &gorm.Config{Logger: getLogger(debug)})
+	db, err := gorm.Open(postgres.New(postgres.Config{Conn: sqlDB}), &gorm.Config{Logger: getLogger(debug)})
+	if err != nil {
+		return nil, err
+	}
 
+	return &impl{db: db}, nil
 }
 
 type Config struct {

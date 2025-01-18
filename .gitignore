@@ -15,3 +15,5 @@
 # vendor/
 
 .idea
+
+pkg/clients/database/test.db
