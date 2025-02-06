@@ -16,11 +16,11 @@ func New[T any](db *gorm.DB) *Repository[T] {
 	}
 }
 
-func (r *Repository[T]) Add(entity *T, ctx context.Context) error {
+func (r *Repository[T]) Add(ctx context.Context, entity *T) error {
 	return r.db.WithContext(ctx).Create(&entity).Error
 }
 
-func (r *Repository[T]) AddAll(entity *[]T, ctx context.Context) error {
+func (r *Repository[T]) AddAll(ctx context.Context, entity *[]T) error {
 	return r.db.WithContext(ctx).Create(&entity).Error
 }
 
@@ -42,7 +42,7 @@ func (r *Repository[T]) GetByID(ctx context.Context, id any, preloads []string) 
 	return &entity, nil
 }
 
-func (r *Repository[T]) Get(params *T, ctx context.Context) *T {
+func (r *Repository[T]) Get(ctx context.Context, params *T) *T {
 	var entity T
 	r.db.WithContext(ctx).Where(&params).FirstOrInit(&entity)
 	return &entity
@@ -85,7 +85,7 @@ func (r *Repository[T]) GetAll(ctx context.Context, req *models.Request) (*[]T, 
 	return &entities, meta, nil
 }
 
-func (r *Repository[T]) Where(params *T, ctx context.Context) (*[]T, error) {
+func (r *Repository[T]) Where(ctx context.Context, params *T) (*[]T, error) {
 	var entities []T
 	err := r.db.WithContext(ctx).Where(&params).Find(&entities).Error
 	if err != nil {
@@ -94,20 +94,20 @@ func (r *Repository[T]) Where(params *T, ctx context.Context) (*[]T, error) {
 	return &entities, nil
 }
 
-func (r *Repository[T]) Update(entity *T, ctx context.Context) error {
+func (r *Repository[T]) Update(ctx context.Context, entity *T) error {
 	return r.db.WithContext(ctx).Save(&entity).Error
 }
 
-func (r *Repository[T]) UpdateAll(entities *[]T, ctx context.Context) error {
+func (r *Repository[T]) UpdateAll(ctx context.Context, entities *[]T) error {
 	return r.db.WithContext(ctx).Save(&entities).Error
 }
 
-func (r *Repository[T]) Delete(id int, ctx context.Context) error {
+func (r *Repository[T]) Delete(ctx context.Context, id int) error {
 	var entity T
 	return r.db.WithContext(ctx).Delete(&entity, id).Error
 }
 
-func (r *Repository[T]) SkipTake(skip int, take int, ctx context.Context) (*[]T, error) {
+func (r *Repository[T]) SkipTake(ctx context.Context, skip int, take int) (*[]T, error) {
 	var entities []T
 	err := r.db.WithContext(ctx).Offset(skip).Limit(take).Find(&entities).Error
 	if err != nil {
@@ -123,7 +123,7 @@ func (r *Repository[T]) Count(ctx context.Context) int64 {
 	return count
 }
 
-func (r *Repository[T]) CountWhere(params *T, ctx context.Context) int64 {
+func (r *Repository[T]) CountWhere(ctx context.Context, params *T) int64 {
 	var entity T
 	var count int64
 	r.db.WithContext(ctx).Model(&entity).Where(&params).Count(&count)
